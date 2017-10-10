@@ -1,4 +1,6 @@
-package com.mycompany;
+package com.mycompany.model.entity;
+
+import java.io.File;
 
 public class DataDetail {
 
@@ -11,6 +13,8 @@ public class DataDetail {
 	private int totalArt;
 	private int endGame;
 	private int maxMedal;
+	private int earnedMedals; 
+	private File resultImagePath;
 	
 	public DataDetail() {
 	}
@@ -68,5 +72,20 @@ public class DataDetail {
 	}
 	public void setMaxMedal(int maxMedal) {
 		this.maxMedal = maxMedal;
+	}
+	public File getResultImagePath() {
+		return resultImagePath;
+	}
+
+	public void setResultImagePath(File resultImagePath) {
+		this.resultImagePath = resultImagePath;
+	}
+
+	public int getEarnedMedals() {
+		return earnedMedals;
+	}
+
+	public void setEarnedMedals(int earnedMedals) {
+		this.earnedMedals = earnedMedals;
 	}
 }

@@ -1,4 +1,6 @@
-package com.mycompany;
+package com.mycompany.model.entity;
+
+import java.io.File;
 
 public class Data {
 	
@@ -7,6 +9,9 @@ public class Data {
 	private String machineName;
 	private int point;
 	private DataDetail todayDataDetail;
+	private DataDetail yesterdayDataDetail;
+
+
 	public int getPoint() {
 		return point;
 	}
@@ -15,8 +20,6 @@ public class Data {
 		this.point = point;
 	}
 
-	private DataDetail yesterdayDataDetail;
-	
 	public Data() {
 	}
 
@@ -59,4 +62,5 @@ public class Data {
 	public void setYesterdayDataDetail(DataDetail yesterdayDataDetail) {
 		this.yesterdayDataDetail = yesterdayDataDetail;
 	}
+
 }

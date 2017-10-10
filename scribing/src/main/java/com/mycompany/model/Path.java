@@ -1,8 +1,8 @@
-package com.mycompany;
+package com.mycompany.model;
 
 public enum Path {
-	Rank("ranking/1-20"),
-	View("view/");
+	Rank("hit/ranking/1-20/"),
+	View("hit/view/");
 
 	private final String path;
 	
