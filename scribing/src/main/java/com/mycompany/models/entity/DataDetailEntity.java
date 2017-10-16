@@ -1,8 +1,8 @@
-package com.mycompany.model.entity;
+package com.mycompany.models.entity;
 
 import java.io.File;
 
-public class DataDetail {
+public class DataDetailEntity {
 
 	private int bb;
 	private int rb;
@@ -15,8 +15,8 @@ public class DataDetail {
 	private int maxMedal;
 	private int earnedMedals; 
 	private File resultImagePath;
-	
-	public DataDetail() {
+
+	public DataDetailEntity() {
 	}
 
 	public int getBb() {
@@ -88,4 +88,5 @@ public class DataDetail {
 	public void setEarnedMedals(int earnedMedals) {
 		this.earnedMedals = earnedMedals;
 	}
+
 }

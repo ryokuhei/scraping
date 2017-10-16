@@ -1,4 +1,4 @@
-package com.mycompany.model;
+package com.mycompany.models;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -1,8 +1,9 @@
-package com.mycompany.model;
+package com.mycompany.models;
 
 public enum Path {
 	Rank("hit/ranking/1-20/"),
-	View("hit/view/");
+	View("hit/view/"),
+	Sort("hit/index_sort/");  //Sort == 分類
 
 	private final String path;
 	
