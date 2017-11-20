@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "madoka_magika")
@@ -28,7 +29,7 @@ public class MadokaMagikaEntity implements DeterminationData, Serializable {
 	@Column(name = "estimated_setting")
 	private int estimated_setting;
 
-	@Column(name = "probability_of_direct_hit_art")
+	@Transient
 	private int directHitArt;
 
 	@ElementCollection(fetch=FetchType.EAGER)

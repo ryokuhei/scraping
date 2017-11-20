@@ -83,6 +83,8 @@ public class HttpClient {
 	public List<RankingEntity> getRankingData() {
 
 		String url = this.domin + "h/" + this.shopNumber + "/" + Path.Rank.getPath();
+		
+//		url = url + "1/";
 
 		LocalDate localDate = this.getCrrentDate();
 

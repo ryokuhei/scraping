@@ -20,7 +20,7 @@ public class RankingEntity implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "machine_no")
+	@Column(name = "machine_number")
 	private int machineNo;
 	@Column(name = "date")
 	private LocalDate date;
