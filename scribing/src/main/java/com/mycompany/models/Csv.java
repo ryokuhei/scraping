@@ -11,7 +11,8 @@ import java.util.Properties;
 
 import com.mycompany.models.entity.DataDetailEntity;
 import com.mycompany.models.entity.DataEntity;
-import com.mycompany.models.entity.MadokaMagika;
+import com.mycompany.models.entity.MadokaMagikaEntity;
+import com.mycompany.models.entity.RankingEntity;
 
 
 public class Csv {
@@ -21,13 +22,14 @@ public class Csv {
 	public Csv() {
 		this.setOutputPath();
 	}
-	public void writeOfRankingData(DataEntity data, String csvName) {
+	public void writeOfRankingData(RankingEntity data, String csvName) {
 		try {
 			FileWriter fw = new FileWriter(outputPath + csvName, true);
 			PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
-    		pw.print("rank of " + data.getRankingData().getRank() + ", ");
-    		pw.print(data.getRankingData().getPoint() + " medal, ");
+    		pw.print("rank of " + data.getRank() + ", ");
+    		pw.print("machineNo. " + data.getMachineNo() + ", ");
+    		pw.print(data.getPoint() + " medal, ");
     		pw.println();
 
 			pw.close();
@@ -41,7 +43,7 @@ public class Csv {
 			FileWriter fw = new FileWriter(outputPath + csvName, true);
 			PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
-    		pw.print("no. " + data.getMachineNo() + ", ");
+    		pw.print("no. " + data.getMachineNumber() + ", ");
     		pw.print(data.getMachineName());
     		pw.println();
 
@@ -69,7 +71,7 @@ public class Csv {
     		pw.print("ResultImagePath　");
     		pw.println();
 
-    		DataDetailEntity todayDataDetail = data.getTodayDataDetail();
+    		DataDetailEntity todayDataDetail = data.getDataDetail();
     		pw.print("today, ");
     		pw.print(todayDataDetail.getBb()+ ", ");
     		pw.print(todayDataDetail.getRb()+ ", ");
@@ -81,23 +83,23 @@ public class Csv {
     		pw.print(todayDataDetail.getTotalArt()+ ", ");
     		pw.print(todayDataDetail.getMaxMedal()+ ", ");
     		pw.print(todayDataDetail.getEarnedMedals() + "medals, ");
-    		pw.print(todayDataDetail.getResultImagePath());
-
-
-    		pw.println();
-    		DataDetailEntity yesterdayDataDetail = data.getYesterdayDataDetail();
-    		pw.print("yesterday, ");
-    		pw.print(yesterdayDataDetail.getBb()+ ", ");
-    		pw.print(yesterdayDataDetail.getRb()+ ", ");
-    		pw.print(yesterdayDataDetail.getArt()+ ", ");
-    		pw.print("1/" + yesterdayDataDetail.getBonusProbability()+ ", ");
-    		pw.print("1/" + yesterdayDataDetail.getTotalBonus()+ ", ");
-    		pw.print(yesterdayDataDetail.getTotalGame()+ ", ");
-    		pw.print(yesterdayDataDetail.getEndGame()+ ", ");
-    		pw.print(yesterdayDataDetail.getTotalArt()+ ", ");
-    		pw.print(yesterdayDataDetail.getMaxMedal()+ " ");
+    		pw.print(todayDataDetail.getResultImageFile());
 
     		pw.println();
+
+//    		DataDetailEntity yesterdayDataDetail = data.getYesterdayDataDetail();
+//    		pw.print("yesterday, ");
+//    		pw.print(yesterdayDataDetail.getBb()+ ", ");
+//    		pw.print(yesterdayDataDetail.getRb()+ ", ");
+//    		pw.print(yesterdayDataDetail.getArt()+ ", ");
+//    		pw.print("1/" + yesterdayDataDetail.getBonusProbability()+ ", ");
+//    		pw.print("1/" + yesterdayDataDetail.getTotalBonus()+ ", ");
+//    		pw.print(yesterdayDataDetail.getTotalGame()+ ", ");
+//    		pw.print(yesterdayDataDetail.getEndGame()+ ", ");
+//    		pw.print(yesterdayDataDetail.getTotalArt()+ ", ");
+//    		pw.print(yesterdayDataDetail.getMaxMedal()+ " ");
+//
+//    		pw.println();
 			
 			pw.close();
 		} catch (IOException e) {
@@ -129,8 +131,8 @@ public class Csv {
 			FileWriter fw = new FileWriter(outputPath + csvName, true);
 			PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
-			if(determinationData instanceof MadokaMagika) {
-    		    MadokaMagika madoka = (MadokaMagika)determinationData;
+			if(determinationData instanceof MadokaMagikaEntity) {
+    		    MadokaMagikaEntity madoka = (MadokaMagikaEntity)determinationData;
 
     		    pw.print("DirectHitArt.");
     		    pw.println();
@@ -158,6 +160,4 @@ public class Csv {
 			e.printStackTrace();
 		}
 	}
-
-
 }

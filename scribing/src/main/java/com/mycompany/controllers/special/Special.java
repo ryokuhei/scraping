@@ -1,4 +1,4 @@
-package com.mycompany.controllers.sort;
+package com.mycompany.controllers.special;
 
 import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.request.http.WebResponse;
@@ -10,6 +10,7 @@ import com.mycompany.models.Csv;
 import com.mycompany.models.HttpClient;
 import com.mycompany.models.ImageAnalysis;
 import com.mycompany.models.entity.DataEntity;
+import com.mycompany.models.entity.MadokaMagikaEntity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,16 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.wicket.markup.html.WebPage;
 
-public class Sort extends WebPage {
+public class Special extends WebPage {
 	private static final long serialVersionUID = 1L;
 	
 	private int sortNo;
 	private String machineName;
 
-	public Sort(final PageParameters parameters) {
+	public Special(final PageParameters parameters) {
 		super(parameters);
 		
-		this.sortNo = parameters.get(0).toInt();
+		this.sortNo = 213110004;
 		
   		ImageAnalysis imageAnalysis = new ImageAnalysis();
 		HttpClient client = new HttpClient();
@@ -45,7 +46,12 @@ public class Sort extends WebPage {
 			System.out.print("EarnedMedals :");
 			System.out.println(data.getDataDetail().getEarnedMedals());
 			
-			dataList.add(data);
+			MadokaMagikaEntity madoka = (MadokaMagikaEntity)data.getDeterminationData();
+//			int directHitArt = madoka.getProbabilityOfDirectHitArt();
+			int directHitArtCount = madoka.getDirectHitArt();
+			if(directHitArtCount >= 1) {
+			    dataList.add(data);
+			}
 			
 		}
 		this.machineName = dataList.get(0).getMachineName();
@@ -60,7 +66,7 @@ public class Sort extends WebPage {
 		String today = localDate.format(formatter);
 
 		Csv csv = new Csv();
-        String csvName = today + "_sort_" + this.sortNo + "_" + this.machineName + ".csv";
+        String csvName = today + "_special_" + this.sortNo + "_" + this.machineName + ".csv";
 		for(DataEntity data: dataList) {
 		    csv.writeOfData(data, csvName);
 		    csv.writeOfDataDetail(data, csvName);

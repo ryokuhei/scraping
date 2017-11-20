@@ -1,23 +1,59 @@
 package com.mycompany.models.entity;
 
-public class DataEntity {
+import java.io.Serializable;
+import java.time.LocalDate;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "machine_data")
+public class DataEntity implements Serializable {
 	
-	private int machineNo;
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
+	@Column(name = "machine_number")
+	private int machineNumber;
+	@Column(name = "machine_name")
 	private String machineName;
-	private DataDetailEntity todayDataDetail;
-	private DataDetailEntity yesterdayDataDetail;
-	private RankingDataEntity rankingData;
-	private Object determinationData;
+	@Column(name = "date")
+	private LocalDate date;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "machine_data_details_id")
+	private DataDetailEntity dataDetail;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "determination_data_id", referencedColumnName="id")
+//	private Object determinationData;
+	private MadokaMagikaEntity determinationData;
 
 	public DataEntity() {
 	}
 
-	public int getMachineNo() {
-		return machineNo;
+	public int getId() {
+		return id;
 	}
 
-	public void setMachineNo(int machineNo) {
-		this.machineNo = machineNo;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getMachineNumber() {
+		return machineNumber;
+	}
+
+	public void setMachineNumber(int machineNumber) {
+		this.machineNumber = machineNumber;
 	}
 
 	public String getMachineName() {
@@ -28,28 +64,20 @@ public class DataEntity {
 		this.machineName = machineName;
 	}
 
-	public DataDetailEntity getTodayDataDetail() {
-		return todayDataDetail;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setTodayDataDetail(DataDetailEntity todayDataDetail) {
-		this.todayDataDetail = todayDataDetail;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
-	public DataDetailEntity getYesterdayDataDetail() {
-		return yesterdayDataDetail;
+	public DataDetailEntity getDataDetail() {
+		return dataDetail;
 	}
 
-	public void setYesterdayDataDetail(DataDetailEntity yesterdayDataDetail) {
-		this.yesterdayDataDetail = yesterdayDataDetail;
-	}
-
-	public RankingDataEntity getRankingData() {
-		return rankingData;
-	}
-
-	public void setRankingData(RankingDataEntity rankingData) {
-		this.rankingData = rankingData;
+	public void setDataDetail(DataDetailEntity dataDetail) {
+		this.dataDetail = dataDetail;
 	}
 
 	public Object getDeterminationData() {
@@ -57,7 +85,13 @@ public class DataEntity {
 	}
 
 	public void setDeterminationData(Object determinationData) {
-		this.determinationData = determinationData;
+		this.determinationData = (MadokaMagikaEntity)determinationData;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
 
 }

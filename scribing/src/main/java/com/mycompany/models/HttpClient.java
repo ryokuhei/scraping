@@ -24,8 +24,8 @@ import org.jsoup.select.Elements;
 
 import com.mycompany.models.entity.DataDetailEntity;
 import com.mycompany.models.entity.DataEntity;
-import com.mycompany.models.entity.MadokaMagika;
-import com.mycompany.models.entity.RankingDataEntity;
+import com.mycompany.models.entity.MadokaMagikaEntity;
+import com.mycompany.models.entity.RankingEntity;
 
 public class HttpClient {
 	
@@ -80,11 +80,13 @@ public class HttpClient {
 	}
 
 	
-	public List<DataEntity> getRankingData() {
+	public List<RankingEntity> getRankingData() {
 
 		String url = this.domin + "h/" + this.shopNumber + "/" + Path.Rank.getPath();
 
-		List<DataEntity> dataList = new ArrayList<DataEntity>();
+		LocalDate localDate = this.getCrrentDate();
+
+		List<RankingEntity> rankingList = new ArrayList<RankingEntity>();
 		try {
 			setResponseDocument(url);
 			Elements elements = document.select(".item .text");
@@ -93,19 +95,17 @@ public class HttpClient {
 			
 			for(Element element: elements) {
 
-         		DataEntity data = new DataEntity();
-         		RankingDataEntity rankingData = new RankingDataEntity();
+         		RankingEntity rankingData = new RankingEntity();
 
 				String rank = element.select(".rank").text();
 				String no   = element.select(".unit_no").text();
-				String name   = element.select(".name").text();
 				String point   = element.select(".point").text();
 				
 				try {
 				    rankingData.setRank(Integer.parseInt(rank.replaceAll("[^0-9]", "")));
-				    data.setMachineNo(Integer.parseInt(no.replaceAll("[^0-9]", "")));
-				    data.setMachineName(name);
+				    rankingData.setMachineNo(Integer.parseInt(no.replaceAll("[^0-9]", "")));
 				    rankingData.setPoint(Integer.parseInt(point.replaceAll("[^0-9]", "")));
+				    rankingData.setDate(localDate);
 				} catch(NumberFormatException e) {
 					e.printStackTrace();
 				}
@@ -114,8 +114,7 @@ public class HttpClient {
 					isRanking = !isRanking;
 				}
 				if(isRanking) {
-					data.setRankingData(rankingData);
-				    dataList.add(data);
+				    rankingList.add(rankingData);
 				} else {
 					break;
 				}
@@ -123,7 +122,7 @@ public class HttpClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return dataList;
+		return rankingList;
 	}
 
 	private String getMachineName() {
@@ -140,7 +139,10 @@ public class HttpClient {
 	public DataEntity getData(int machineNo) {
 		
 		DataEntity data = new DataEntity();
-		data.setMachineNo(machineNo);
+		data.setMachineNumber(machineNo);
+
+		LocalDate localDate = this.getCrrentDate();
+		data.setDate(localDate);
 
 		String url = this.domin + "h/" + this.shopNumber + "/" + Path.View.getPath() + machineNo;
 		
@@ -184,10 +186,10 @@ public class HttpClient {
 
 				if(day.equals("本日")) {
 			        File imagePath = this.getResultImage(document, machineNo, machineName);
-			        dataDetail.setResultImagePath(imagePath);
-			        data.setTodayDataDetail(dataDetail);
+			        dataDetail.setResultImageFile(imagePath);
+			        data.setDataDetail(dataDetail);
 				} else if(day.equals("1日前")) {
-			        data.setYesterdayDataDetail(dataDetail);
+//			        data.setYesterdayDataDetail(dataDetail);
 				} else {
 					System.out.println(day);
 					break;
@@ -196,10 +198,8 @@ public class HttpClient {
 			String checkMachineName = this.getMachineName("2013110004");
 
 			if(checkMachineName.equals(data.getMachineName())) {
-
-    			System.out.println("!!!!!!! OK !!!!!!!!");
-				int totalGame = data.getTodayDataDetail().getTotalGame();
-				int totalArt  = data.getTodayDataDetail().getTotalArt();
+				int totalGame = data.getDataDetail().getTotalGame();
+				int totalArt  = data.getDataDetail().getTotalArt();
 			    data.setDeterminationData(this.getDirectHitArt(totalGame - totalArt));
 			}
 
@@ -407,7 +407,7 @@ public class HttpClient {
 	
 	private Object getDirectHitArt(int normalGame) {
 
-		MadokaMagika madoka = new MadokaMagika();
+		MadokaMagikaEntity madoka = new MadokaMagikaEntity();
 		
 		Elements tbody = document.select(".history tbody");
 		Elements trList = tbody.select("tr");
@@ -472,6 +472,11 @@ public class HttpClient {
 		}
 		machineName = properties.getProperty(sortNo);
 		return machineName;
+	}
+	
+	private LocalDate getCrrentDate() {
+		LocalDate localDate = LocalDate.now();
+		return localDate;
 	}
 
 }

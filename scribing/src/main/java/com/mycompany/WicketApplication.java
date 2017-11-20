@@ -6,6 +6,8 @@ import org.apache.wicket.protocol.http.WebApplication;
 import com.mycompany.controllers.homePage.HomePage;
 import com.mycompany.controllers.ranking.Ranking;
 import com.mycompany.controllers.sort.Sort;
+import com.mycompany.controllers.special.Special;
+import com.mycompany.controllers.test.TestHibernate;
 import com.mycompany.controllers.test.TestJson;
 import com.mycompany.controllers.view.View;
 
@@ -24,6 +26,7 @@ public class WicketApplication extends WebApplication
 	public Class<? extends WebPage> getHomePage()
 	{
 		return HomePage.class;
+//		return TestHibernate.class;
 	}
 
 	/**
@@ -39,7 +42,9 @@ public class WicketApplication extends WebApplication
 		mountPage("/ranking", Ranking.class);
 		mountPage("/view", View.class);
 		mountPage("/sort", Sort.class);
+		mountPage("/special", Special.class);
 		mountPage("/testJson", TestJson.class);
+		mountPage("/test", TestHibernate.class);
 
 		// add your configuration here
 	}

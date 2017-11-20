@@ -1,20 +1,52 @@
 package com.mycompany.models.entity;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class DataDetailEntity {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table(name = "machine_data_details")
+public class DataDetailEntity implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+	@Column(name = "bb")
 	private int bb;
+	@Column(name = "rb")
 	private int rb;
+	@Column(name = "art")
 	private int art;
+	@Column(name = "bonus_probability")
 	private int bonusProbability;
+	@Column(name = "total_bonus")
 	private int totalBonus;
+	@Column(name = "total_game")
 	private int totalGame;
+	@Column(name = "total_art")
 	private int totalArt;
+	@Column(name = "end_game")
 	private int endGame;
+	@Column(name = "max_medal")
 	private int maxMedal;
+	@Column(name = "earned_medal")
 	private int earnedMedals; 
-	private File resultImagePath;
+	@Column(name = "result_image_path")
+	private String resultImagePath;
+	@Transient
+	private File resultImageFile;
 
 	public DataDetailEntity() {
 	}
@@ -70,15 +102,16 @@ public class DataDetailEntity {
 	public int getMaxMedal() {
 		return maxMedal;
 	}
+	
 	public void setMaxMedal(int maxMedal) {
 		this.maxMedal = maxMedal;
 	}
-	public File getResultImagePath() {
-		return resultImagePath;
+	public File getResultImageFile() {
+		return resultImageFile;
 	}
 
-	public void setResultImagePath(File resultImagePath) {
-		this.resultImagePath = resultImagePath;
+	public void setResultImageFile(File resultImageFile) {
+		this.resultImageFile = resultImageFile;
 	}
 
 	public int getEarnedMedals() {
@@ -87,6 +120,13 @@ public class DataDetailEntity {
 
 	public void setEarnedMedals(int earnedMedals) {
 		this.earnedMedals = earnedMedals;
+	}
+	
+	@PrePersist
+	@PreUpdate
+	public void preCreateAndUpdate() {
+		String path = this.resultImageFile.getPath();
+		this.resultImagePath = path;
 	}
 
 }

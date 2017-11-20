@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.mycompany.models.Csv;
 import com.mycompany.models.HttpClient;
 import com.mycompany.models.ImageAnalysis;
+import com.mycompany.models.TestDao;
 import com.mycompany.models.entity.DataEntity;
 
 import java.time.LocalDate;
@@ -28,13 +29,15 @@ public class View extends WebPage {
 		
 		DataEntity data = client.getData(machineNo);
 
-		if(data.getTodayDataDetail().getResultImagePath() != null) {
-    	       int earnedMedals = imageAnalysis.calculateEarnedMedals(data.getTodayDataDetail().getResultImagePath());
-    	       data.getTodayDataDetail().setEarnedMedals(earnedMedals);
+		if(data.getDataDetail().getResultImageFile() != null) {
+    	       int earnedMedals = imageAnalysis.calculateEarnedMedals(data.getDataDetail().getResultImageFile());
+    	       data.getDataDetail().setEarnedMedals(earnedMedals);
 		}
 		System.out.print("EarnedMedals :");
-		System.out.println(data.getTodayDataDetail().getEarnedMedals());
+		System.out.println(data.getDataDetail().getEarnedMedals());
 		
+		TestDao dao = new TestDao();
+		dao.create(data);
 		writeCsv(data);
 		setJson(data);
     }
@@ -45,7 +48,7 @@ public class View extends WebPage {
 		String today = localDate.format(formatter);
 
 		Csv csv = new Csv();
-        String csvName = today + "_" + "view_" + data.getMachineNo() + "_" + data.getMachineName() + ".csv";
+        String csvName = today + "_" + "view_" + data.getMachineNumber() + "_" + data.getMachineName() + ".csv";
 
 		csv.writeOfData(data, csvName);
 		csv.writeOfDataDetail(data, csvName);

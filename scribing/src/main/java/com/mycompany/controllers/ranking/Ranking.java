@@ -6,11 +6,13 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.resource.StringResourceStream;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mycompany.controllers.test.TestHibernate;
 import com.mycompany.models.Csv;
 import com.mycompany.models.HttpClient;
 import com.mycompany.models.ImageAnalysis;
+import com.mycompany.models.TestDao;
 import com.mycompany.models.entity.DataEntity;
-import com.mycompany.models.entity.RankingDataEntity;
+import com.mycompany.models.entity.RankingEntity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,47 +26,28 @@ public class Ranking extends WebPage {
 	public Ranking(final PageParameters parameters) {
 		super(parameters);
 
-  		ImageAnalysis imageAnalysis = new ImageAnalysis();
 		HttpClient client = new HttpClient();
 
-		List<DataEntity> rankingDataList = client.getRankingData();
-		List<DataEntity> dataList = new ArrayList<DataEntity>();
-		for(DataEntity data: rankingDataList) {
-
-			RankingDataEntity rankingData = data.getRankingData();
-			data = client.getData(data.getMachineNo());
-			data.setRankingData(rankingData);
-
-			if(data.getTodayDataDetail().getResultImagePath() != null) {
-    	        int earnedMedals = imageAnalysis.calculateEarnedMedals(data.getTodayDataDetail().getResultImagePath());
-    	        data.getTodayDataDetail().setEarnedMedals(earnedMedals);
-			}
-			System.out.print("EarnedMedals :");
-			System.out.println(data.getTodayDataDetail().getEarnedMedals());
-
-			dataList.add(data);
-		}
+		List<RankingEntity> rankingList = client.getRankingData();
 		
-		writeCsv(dataList);
-		setJson(dataList);
+		for(RankingEntity ranking: rankingList) {
+    		TestDao dao = new TestDao();
+	    	dao.create(ranking);
+		}
+		writeCsv(rankingList);
+		setJson(rankingList);
     }
 
-    protected void writeCsv(List<DataEntity> dataList) {
+    protected void writeCsv(List<RankingEntity> dataList) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 		LocalDate localDate = LocalDate.now();
 		String today = localDate.format(formatter);
 
 		Csv csv = new Csv();
         String csvName = today + "_" + "ranking" + ".csv";
-		for(DataEntity data: dataList) {
+		for(RankingEntity data: dataList) {
 		    csv.writeOfRankingData(data, csvName);
-		    csv.writeOfData(data, csvName);
-		    csv.writeOfDataDetail(data, csvName);
-			if(data.getDeterminationData() != null) {
-        		csv.writeOfDeterminationData(data.getDeterminationData(), csvName);
-    		}
 			csv.writeOfEnter(csvName);
-	    
 		}
 	}
 
@@ -74,7 +57,7 @@ public class Ranking extends WebPage {
 		super.configureResponse(response);
 	}
 	
-	protected void setJson(List<DataEntity> dataList) {
+	protected void setJson(List<RankingEntity> dataList) {
 		Gson gson = new GsonBuilder().create();
 		getRequestCycle().scheduleRequestHandlerAfterCurrent(
 				new ResourceStreamRequestHandler(
