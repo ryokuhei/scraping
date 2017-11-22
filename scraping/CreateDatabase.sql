@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS `rankings` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `machine_number` bigint(20) NOT NULL,
